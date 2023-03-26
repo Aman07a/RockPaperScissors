@@ -10,29 +10,28 @@ import { createRockPaperScissors, Move, Outcome } from "./rock-paper-scissors";
 describe("rock-paper-scissors", () => {
   describe("play", () => {
     describe("paper beats rock", () => {
-      test("given player move paper and opponent move rock should return player wins ", () => {
-        // Arrange
-        const playerMove = Move.Paper;
-        const opponentMove = Move.Rock;
-        const expected = Outcome.PlayerWins;
-        const sut = createRockPaperScissors();
-        // Act
-        const actual = sut.play(playerMove, opponentMove);
-        // Assert
-        expect(actual).toBe(expected);
-      });
-
-      test("given player move rock and opponent move paper should return player loses", () => {
-        // Arrange
-        const playerMove = Move.Rock;
-        const opponentMove = Move.Paper;
-        const expected = Outcome.PlayerLoses;
-        const sut = createRockPaperScissors();
-        // Act
-        const actual = sut.play(playerMove, opponentMove);
-        // Assert
-        expect(actual).toBe(expected);
-      });
+      test.each([
+        {
+          playerMove: Move.Paper,
+          opponentMove: Move.Rock,
+          expected: Outcome.PlayerWins,
+        },
+        {
+          playerMove: Move.Rock,
+          opponentMove: Move.Paper,
+          expected: Outcome.PlayerLoses,
+        },
+      ])(
+        "Player move: $playerMove, Opponent move: $opponentMove, Expected outcome: $expected",
+        ({ playerMove, opponentMove, expected }) => {
+          // Arrange
+          const sut = createRockPaperScissors();
+          // Act
+          const actual = sut.play(playerMove, opponentMove);
+          // Assert
+          expect(actual).toBe(expected);
+        }
+      );
     });
 
     describe("scissors beats paper", () => {
